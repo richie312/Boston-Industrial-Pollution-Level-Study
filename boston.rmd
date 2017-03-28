@@ -104,32 +104,6 @@ AirPollution_belowmean=data.frame(boston$LON[boston$NOX<=0.5547],
 colnames(AirPollution_belowmean)=c("LON","LAT","NOX","Price")
 ```
 
-```{r,echo=FALSE}
-## Load the necessary Packages
-
-library(ggmap)
-
-## Create dataframe for above mean of Air Pollution
-
-AirPollution_abovemean<-data.frame(boston$LON[boston$NOX>=0.5547],
-                                   boston$LAT[boston$NOX>=0.5547],
-                                   boston$NOX[boston$NOX>=0.5547],
-                                  boston$MEDV[boston$NOX>=0.5547])
-colnames(AirPollution_abovemean)=c("LON","LAT","NOX","Price")
-names(AirPollution_abovemean)
-
-
-
-## Create the dataframe where the nox emission is lower than mean value
-
-AirPollution_belowmean=data.frame(boston$LON[boston$NOX<=0.5547],
-                                  boston$LAT[boston$NOX<=0.5547],
-                                  boston$NOX[boston$NOX<=0.5547],
-                                  boston$MEDV[boston$NOX<=0.5547])
-
-colnames(AirPollution_belowmean)=c("LON","LAT","NOX","Price")
-```
-
 #Note
 The command *qmap* is the short form for ggmap(get_map("",...))
 ```{}
@@ -138,15 +112,6 @@ The command *qmap* is the short form for ggmap(get_map("",...))
 Boston=qmap("boston",zoom=10,legend='topleft',extent='device')
 Boston+geom_point(aes(x=LON,y=LAT,size=NOX),alpha=0.1,colour="#330000",data=AirPollution_abovemean)
 ```
-
-```{r,echo=FALSE}
-## Create the map for emission level above 0.55
-
-Boston=qmap("boston",zoom=10,legend='topleft',extent='device')
-Boston+geom_point(aes(x=LON,y=LAT,size=NOX),alpha=0.1,colour="#330000",data=AirPollution_abovemean)
-```
-
-
 The black zone is the high pollution zone and we can also see the minimum *NOX* emission level is starting from 0.6
 ```{}
 ## Create the map for emission level below 0.55
@@ -155,13 +120,6 @@ Boston+geom_point(aes(x=LON,y=LAT,size=NOX),colour="#66FF00",
                   data=AirPollution_belowmean)
 ```
 
-
-```{r,echo=FALSE}
-## Create the map for emission level below 0.55
-
-Boston+geom_point(aes(x=LON,y=LAT,size=NOX),colour="#66FF00",
-                  data=AirPollution_belowmean)
-```
 The green zone is the low pollution zone
 
 ```{}
@@ -174,16 +132,6 @@ Boston+geom_point(aes(x=LON,y=LAT,size=NOX),alpha=0.1,colour="#FF3300",
                   
 ```
 
-
-```{r,echo=FALSE}
-## Combined plot of Pollution zone
-
-Boston+geom_point(aes(x=LON,y=LAT,size=NOX),alpha=0.1,colour="#FF3300",
-                  data=AirPollution_abovemean)+
-  geom_point(aes(x=LON,y=LAT,size=NOX),colour="#99CC00",
-             data=AirPollution_belowmean)
-                  
-```
 ## Pollution Zone
 # Area with High and low NOX emission level
 
@@ -209,28 +157,6 @@ CZ<-Boston+scale_fill_continuous(guide = guide_legend(title = "Zone Level"))+Hig
 CZ
 ```
 
-
-```{r,echo=FALSE}
-## Create the density plot for the high Pollution zone
-
-High_NOX<-stat_density2d(aes(x=LON,y=LAT,fill=..level..,alpha=..level..),
-                         size=3,bins=8,data=AirPollution_abovemean,
-                         geom='polygon')
-Boston+scale_fill_continuous(guide = guide_legend(title = "Zone Level"))+High_NOX
-  
-
-## Create the density plot for the low Pollution zone
-
-Low_NOX<-stat_density2d(aes(x=LON,y=LAT,fill=..level..,alpha=0.1),colour="#66CC66",
-                        size=3,bins=3,data=AirPollution_belowmean,
-                        geom='polygon')
-Boston+scale_fill_continuous(guide = guide_legend(title = "Zone Level"))+Low_NOX
-
-## Combine both zone
-
-CZ<-Boston+scale_fill_continuous(guide = guide_legend(title = "Zone Level"))+High_NOX+Low_NOX
-CZ
-```
 ## Plot the Property Value for the Greater Boston City
 Here we will plot the property value for the entire Boston city and we will see the different valuation in two different zones of Pollution.
 ```{}
@@ -242,14 +168,7 @@ CZ+geom_point(aes(x=LON,y=LAT,size=Price),
                                    data=combined_df,colour="#990099",alpha=0.18)+scale_fill_continuous(guide = guide_legend(title = ""))
 ```
 
-```{r,echo=FALSE}
-combined_df<-rbind(AirPollution_belowmean,AirPollution_abovemean)
 
-## Plot the valuation of property for both the zone
-
-CZ+geom_point(aes(x=LON,y=LAT,size=Price),
-                                   data=combined_df,colour="#990099",alpha=0.18)+scale_fill_continuous(guide = guide_legend(title = ""))
-```
 There are other style of map in ggmap(). Please check the other maps by using the below commands,
 
 Longest form
